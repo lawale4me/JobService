@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"        
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Send Broadcast</ui:define>
+    <ui:define name="content">                             
+
+      <h:form>
+            <p:growl id="messages" showDetail="true" autoUpdate="true"  />
+            <table width="40%" align="center" style="margin: 30px 0px 0px 120px">
+                <tr>
+                    <td id="top" align="center">
+                        <p:panelGrid id="panel" columns="2" style="alignment-adjust: middle">
+                            <f:facet name="header">Send SMS Broadcast</f:facet>
+
+                            
+                    <h:outputLabel for="rangeTo" value="Choose Target " />
+                    <h:selectOneMenu id="rangeTo" value="#{vacancyMBean.rangeTo}" >
+                         <f:selectItem itemValue="All" />
+                        <f:selectItem itemValue="Active"/>
+                        <f:selectItem itemValue="InActive"/>                        
+                    </h:selectOneMenu>                            
+                            
+                     <h:outputLabel for="sendTo" value="Choose Recipients " />
+                     <h:selectOneMenu id="sendTo" value="#{vacancyMBean.selectedMenu}" >
+                         <f:selectItem itemValue="All" />
+                        <f:selectItem itemValue="Area Of Interest"/>
+                        <f:ajax render="groups"/>
+                    </h:selectOneMenu>
+                     <h:outputLabel for="discipline" value="Area of interest " />
+                     <h:panelGroup id="groups">
+                     <h:panelGroup  rendered="#{vacancyMBean.selectedMenu.equalsIgnoreCase('Area Of Interest')}">                    
+                    <h:selectOneMenu id="discipline" 
+                                     converter="#{disciplineConverter}"
+                                     value="#{vacancyMBean.discpiline}" 
+                                     title="disc_fk" >                     
+                        <f:selectItems value="#{vacancyMBean.discpilineList}" 
+                                       var="disc" itemValue="#{disc}" 
+                                       itemLabel="#{disc.name}"/>
+                        <p:ajax update="discipline" listener="#{vacancyMBean.discpiline}" />
+                    </h:selectOneMenu>
+                    </h:panelGroup>        
+                    <h:panelGroup rendered="#{!vacancyMBean.selectedMenu.equalsIgnoreCase('Area Of Interest')}">
+                      <h:selectOneMenu id="sendTo1" value="#{vacancyMBean.selectedMenu}" >
+                          <f:selectItem itemValue="All" itemDisabled="true" />                                             
+                    </h:selectOneMenu>         
+                    </h:panelGroup>
+                    </h:panelGroup>
+                            <h:outputLabel for="vacancy" value="Message " />                            
+                            <p:inputTextarea id="vacancy" value="#{vacancyMBean.vacancy}" 
+                                     label="message" required="true" style="width:200px; height: 15px"
+                                     rows="5" cols="30"   onkeyup="countChar(this)" 
+                                     requiredMessage="Please enter a valid message"/>
+                            
+                            <h:outputLabel for="demo" value="Characters: " />
+                            <p id="demo"></p>
+
+                            <script>
+                            function countChar(val) {
+                                var len = val.value.length;
+                                var num = Math.ceil(len / 160);                                
+                                var x = len+' : '+num+' SMS Message(s)';
+                                document.getElementById("demo").innerHTML = x; 
+                            }                                                                                  
+                            </script>                            
+                                                                                
+                            <f:facet name="footer">
+                                <p:commandButton icon="ui-icon-locked" ajax="false" value="Send SMS" action="#{vacancyMBean.sendSMS()}" update="messages" />                                                                 
+                                <p:commandButton value="Reset" update="panel" process="@this" actionListener="#{vacancyMBean.reset}"  style="margin-right:20px;" />
+                            </f:facet>
+                        </p:panelGrid>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

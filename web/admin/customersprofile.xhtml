@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                    
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="title">Customer</ui:define>
+    <ui:define name="content">                             
+
+   
+          <h:form id="form1">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Customer" style="width: 1000px;"> 
+                <p:panelGrid columns="2">
+                    <h:outputLabel for="userName" value="User Name: " />
+                    <p:inputText  value="#{customerAdminMBean.userName}" required="true"
+                                  maxlength="10"                                                   
+                                  tabindex="Maximum 10 characters. Can be Alphanumeric  Without spaces" 
+                                  title="Maximum 10 characters. Can be Alphanumeric  Without spaces"
+                                  placeholder="Maximum 10 characters. Can be Alphanumeric  Without spaces"                                                                                                    
+                                  validatorMessage="Maximum 10 characters. Can be Alphanumeric. Without spaces"
+                                  requiredMessage="Username  cannot be blank">
+                        <f:validateLength minimum="4" maximum="10" />
+                    </p:inputText>
+                    <h:outputLabel for="passwd"   value="Password " />
+                    <p:password match="cpasswd"  value="#{customerAdminMBean.passwd}" required="true"
+                                maxlength="10"
+                                tabindex="Maximum 10 characters. Can be Alphanumeric"
+                                title="Maximum 10 characters. Can be Alphanumeric"
+                                placeholder="Maximum 10 characters. Can be Alphanumeric"
+                                validatorMessage="Maximum 10 characters. Can be Alphanumeric."
+                                requiredMessage="Password  cannot be blank">
+                        <f:validateLength minimum="6" maximum="10" />
+                    </p:password>
+                    <h:outputLabel for="cpasswd" value="Confirm Password " />
+                    <p:password id="cpasswd"  value="#{customerAdminMBean.cpasswd}" required="true" 
+                                maxlength="10"
+                                tabindex="Minimun 6 and Maximum 10 characters. Can be Alphanumeric"
+                                title="Minimun 6 and Maximum 10 characters. Can be Alphanumeric"
+                                placeholder="Maximum 10 characters. Can be Alphanumeric"
+                                validatorMessage="Minimun 6 and Maximum 10 characters. Can be Alphanumeric."
+                                requiredMessage="Confirm password  cannot be blank">                        
+                        <f:validateLength minimum="6" maximum="10" />
+                    </p:password>
+                        
+                    <h:outputLabel for="fname" value="First Name " />
+                    <p:inputText value="#{customerAdminMBean.fname}" required="true"
+                                 requiredMessage="First Name  cannot be blank"/>
+                    <h:outputLabel for="lname" value="Surname " />
+                    <p:inputText  value="#{customerAdminMBean.lname}" required="true"
+                                  requiredMessage="Surname  cannot be blank"/>
+                    <h:outputLabel for="email" value="Email " />
+                    <p:inputText  value="#{customerAdminMBean.email}" required="true"
+                                  requiredMessage="Email  cannot be blank"/>                    
+                    <h:outputLabel for="phone" value="Phone " />
+                    <p:inputText  value="#{customerAdminMBean.phone}" required="true"
+                                  tabindex="Enter your number in format 2348xxx or 2347xxx"
+                                  title="Enter your number in format 2348xxx or 2347xxx"
+                                  placeholder="Enter your number in format 2348xxx or 2347xxx"
+                                  requiredMessage="Phone number cannot be blank"
+                                  validatorMessage="Phone field must begin with 234 and should be a valid number"
+                                  >
+                                        <f:validateRegex pattern="^(2348|2347|2349)[0-9]{9}$" />
+                    </p:inputText>
+                    <f:facet name="footer">
+                        <h:commandButton value="Add Customer" action="#{customerAdminMBean.addAction}"/>
+                    </f:facet>
+                </p:panelGrid>
+                    </p:panel>
+        </h:form>
+                <h:form id="form90">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Customer" style="width: 1000px;"> 
+                <p:spacer height="30px;"/>
+                <p:dataTable value="#{customerAdminMBean.customerList}" var="cust" 
+                        widgetVar="50" style="width: 1000px;" editable="true"
+                        resizableColumns="true"
+                        rowKey="#{cust.customerId}" rows="10" paginator="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{customerAdminMBean.customerList.size()}" />            
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{customerAdminMBean.onEdit}" update=":form1:messages" />  
+                    <p:ajax event="rowEditCancel" listener="#{customerAdminMBean.onCancel}" update=":form1:messages" /> 
+                    
+                    <p:column filterBy="#{cust.fname}">
+                        <f:facet name="header">  
+                            <h:outputText value="First Name" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{cust.fname}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{cust.fname}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>
+                    <p:column filterBy="#{cust.lname}">
+                        <f:facet name="header">  
+                            <h:outputText value="Last Name" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{cust.lname}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{cust.lname}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>
+                    
+                    <p:column headerText="Username" filterBy="#{cust.username}">
+                        <h:outputText value="#{cust.username}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Area of Interest">
+                        <h:outputText value="#{cust.extra}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Status">
+                        <h:outputText value="#{customerAdminMBean.getXStatus(cust.paymentStatus)}"/>
+                    </p:column> 
+
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Email" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{cust.email}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{cust.email}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column filterBy="#{cust.phone}">
+                        <f:facet name="header">  
+                            <h:outputText value="Phone" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{cust.phone}"  />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{cust.phone}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>                                                                                                                
+                    <p:column headerText="Reg Date" >
+                         <h:outputText value="#{cust.regDate}" />                            
+                    </p:column>
+                   
+                    
+                    <p:column headerText="Download CV">
+                        <p:commandButton value="Download" ajax="false"
+                        actionListener="#{customerAdminMBean.prepareFile(cust.cvurl)}">                        
+                        <p:fileDownload value="#{customerAdminMBean.file}"/>
+                    </p:commandButton>                                                             
+                    </p:column>
+
+                    <p:column headerText="Options" style="width:50px">  
+                        <p:rowEditor />  
+                    </p:column> 
+                    
+                    
+                    <p:column>
+                        <p:commandButton  value="Reset Password"
+                        title="Reset Password"
+                        action="#{customerAdminMBean.reset(cust.customerId)}"
+                        ajax="true" process="@this"  update=":form1:messages"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

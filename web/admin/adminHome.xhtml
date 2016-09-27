@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                >
+
+    <ui:define name="title">ADMIN PAGE</ui:define>
+    <ui:define name="content">                             
+
+        <h:form id="form">                                                   
+            <h:outputText value="#{loginMBean.lname} #{loginMBean.fname} " />    
+            <br/>
+            <h:outputText value="#{loginMBean.email} " /> 
+            <br/>
+            <h:outputText value="#{loginMBean.phone} " /> 
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

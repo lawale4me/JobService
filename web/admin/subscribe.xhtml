@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"        
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Subscribe User</ui:define>
+    <ui:define name="content">                             
+
+      <h:form>
+            <p:growl id="messages" showDetail="true" autoUpdate="true"  />
+            <table width="40%" align="center" style="margin: 60px 0px 0px 120px">
+                <tr>
+                    <td id="top" align="center">
+                        <p:panelGrid id="panel" columns="2" style="alignment-adjust: middle">
+                            <f:facet name="header">Subscribe</f:facet>
+                            <h:outputLabel for="custt" value="Customer " />
+                               <h:selectOneMenu id="custt"                                      
+                                     value="#{creditAdminMBean.customerId}" 
+                                     title="prod_fk" >                     
+                                   <f:selectItems value="#{creditAdminMBean.customerList}" 
+                                                  var="cust" itemValue="#{cust.customerId}" 
+                                       itemLabel="#{cust.username}"/>
+                    </h:selectOneMenu>                            
+                            
+                            <h:outputLabel for="referen" value="Reference " />
+                            <p:inputText id="referen" value="#{creditAdminMBean.purpose}" label="Referen" 
+                                 required="true" style="width:200px; height: 15px"
+                                 size="11"    requiredMessage="Please enter a valid Reference"/>                            
+                            
+                            <f:facet name="footer">
+                                <p:commandButton icon="ui-icon-locked" ajax="false" value="Subscribe" action="#{creditAdminMBean.subscribe()}" update="messages" />                                                                                                 
+                            </f:facet>
+                        </p:panelGrid>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

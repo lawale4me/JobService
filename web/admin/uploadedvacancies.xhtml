@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Uploaded Vacancies</ui:define>
+    <ui:define name="content">                             
+
+   
+                     
+                             
+            <p:panel header="Uploaded Vacancies" style="width: 1000px;"> 
+
+                <h:form id="form1">   
+                    <p:growl id="messages" showDetail="true"/> 
+                <p:outputLabel for="dtFrom" value="From " />
+                <p:calendar widgetVar="var1" id="dtFrom" value="#{vacancyMBean.startdate}"
+                            pattern="MM/dd/yyyy HH:mm:ss" mode="popup" showOn="button" />            
+
+                <p:outputLabel for="dtTo" value="To " />
+                <p:calendar widgetVar="var2" id="dtTo" value="#{vacancyMBean.enddate}"
+                            pattern="MM/dd/yyyy HH:mm:ss" mode="popup" showOn="button" />                                            
+                
+                <p:commandButton id="btnFilter" value="Search" update="tTable"  action="#{vacancyMBean.searchVacancy()}" ajax="true" />
+
+            <p:spacer/>
+                
+            <p:dataTable value="#{vacancyMBean.vacancyList}" var="vacancy" 
+                        widgetVar="tTable" style="width: 1000px;" editable="true"
+                        id="tTable" resizableColumns="true"
+                        rowKey="#{vacancy.vacancyId}" rows="10" paginator="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{vacancyMBean.vacancyList.size()}" />            
+                    </f:facet>
+                    
+                <p:ajax event="rowEdit" listener="#{vacancyMBean.onEdit}" update=":form1:messages" />  
+                    <p:ajax event="rowEditCancel" listener="#{vacancyMBean.onCancel}" update=":form1:messages" /> 
+                <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Vacancy Message" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{vacancy.message}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{vacancy.message}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                </p:column>                                
+
+                    <p:column headerText="Discipline" filterBy="#{vacancyMBean.getDiscipline(vacancy.target)}" >
+                    <h:outputText value="#{vacancyMBean.getDiscipline(vacancy.target)}" />                              
+                </p:column>  
+                                       
+                    
+                <p:column headerText="Submitted Date" >                        
+                    <h:outputText value="#{vacancy.vacancyDate}" />                          
+                </p:column>   
+                    
+                <p:column headerText="Options" style="width:50px">  
+                        <p:rowEditor />  
+                </p:column> 
+                   
+                </p:dataTable>
+            
+            </h:form>
+            </p:panel>
+        
+
+
+    </ui:define>
+</ui:composition>

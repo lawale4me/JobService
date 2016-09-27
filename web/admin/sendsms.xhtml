@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Send SMS</ui:define>
+    <ui:define name="content">                                 
+        <h:form>
+            <p:growl id="messages" showDetail="true" autoUpdate="true"  />
+            <table width="60%" align="left" style="margin: 30px 0px 0px 120px">
+                <tr>
+                    <td id="top" align="center">
+                        <p:panelGrid id="panel" columns="2" style="alignment-adjust: middle; border: 0" >
+                            <f:facet name="header">Send SMS</f:facet>
+                            <h:outputLabel for="number" value="Number " />
+                            <p:inputText id="number" value="#{sMSMBean.number}" label="number" required="true" style="width:250px; height: 15px"
+                                       requiredMessage="Please enter a valid Number"
+                                       tabindex="Maximum 10 numbers seperated by comma e.g 23480xx,23470xx"     
+                                       title="Maximum 10 numbers seperated by comma e.g 23480xx,23470xx"
+                                       placeholder="Maximum 10 numbers seperated by comma e.g 23480xx,23470xx"/>
+                            
+
+                            <h:outputLabel for="sender" value="Sender " />
+                            <p:inputText id="sender" value="#{sMSMBean.sender}" label="sender" required="true" style="width:200px; height: 15px"
+                                         size="11" maxlength="11" requiredMessage="Please enter a valid sender"
+                                       tabindex="Maximum 11 characters, Alphanumeric(A-Z)(0-9), no special characters like *_( ) +=^$#"     
+                                       title="Maximum 11 characters, Alphanumeric(A-Z)(0-9), no special characters like *_( ) +=^$#"
+                                       placeholder="Maximum 11 characters, Alphanumeric(A-Z)(0-9), no special characters like *_( ) +=^$#"
+                                       >
+                                <!--<f:validateLength  maximum="11" />-->
+                                <f:validateRegex pattern="[0-9a-zA-Z' ']{3,11}"/>
+                            </p:inputText>                                                        
+                            
+                            <h:outputLabel for="draft" value="Saved Message " />
+                            <h:selectOneMenu id="draft" value="#{sMSMBean.selectedDraft}" >
+                                <f:converter converterId="draftConverter" />
+                                 <f:selectItem itemLabel="Select One" itemValue="#{null}" /> 
+                                <f:selectItems value="#{sMSMBean.drafts}"
+                                               var="item" itemLabel="#{item.draft}" 
+                                               itemValue="#{item}" />                                
+                                <f:ajax event="change"  listener="#{sMSMBean.updateMsg}"  render="message" />                                                                        
+                            </h:selectOneMenu>
+                                                        
+                            <p:commandLink  update="draft"   value="Save Message" action="#{sMSMBean.saveMsg}" process="message,@this,draft" />                            
+                            <p:commandLink  update="draft,message" value="Delete Message" action="#{sMSMBean.deleteMsg}" process="message,@this,draft"  />
+                            
+                            <h:outputLabel for="message" value="Message " />
+                            <p:inputTextarea id="message" value="#{sMSMBean.message}" 
+                                     label="message" required="true" style="width:200px; height: 15px"
+                                     rows="5" cols="30" onkeyup="countChar(this)"
+                                     requiredMessage="Please enter a valid message"/>
+                            
+                            <h:outputLabel for="demo" value="Characters: " />
+                            <p id="demo"></p>
+
+                            <script>
+                            function countChar(val) {
+                                var len = val.value.length;
+                                var num = Math.ceil(len / 160);                                
+                                var x = len+' : '+num+' SMS Message(s)';
+                                document.getElementById("demo").innerHTML = x; 
+                            }
+                            </script>
+
+                            <h:outputLabel for="schedule" value="Schedule " />
+                                                     
+                            <p:calendar id="schedule" value="#{sMSMBean.schedule}" pattern="MM/dd/yyyy HH:mm:ss"  rendered="true"
+                                        tabindex="click here to choose send time" 
+                                        title="click here to choose send time"
+                                        placeholder="click here to choose send time"/>
+                                                                                
+                            <f:facet name="footer">
+                                <p:commandButton icon="ui-icon-locked" ajax="false" value="Send" action="#{sMSMBean.sendSMS()}" update="messages" />
+                                <p:commandButton value="Reset" update="panel" process="@this" actionListener="#{sMSMBean.reset}"  style="margin-right:20px;" />
+                            </f:facet>
+                        </p:panelGrid>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

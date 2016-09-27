@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Discipline Subscription Report</ui:define>
+    <ui:define name="content">                             
+
+   
+                     
+            <p:growl id="messages" showDetail="true"/>                        
+            <p:panel header="Discipline Subscription Report" style="width: 1000px;"> 
+
+                <h:form id="form1">                
+            <p:spacer/>
+                
+            <p:dataTable value="#{disciplineMBean.discList}" var="discList" 
+                        widgetVar="tTable" style="width: 1000px;" editable="true"
+                        id="tTable" resizableColumns="true"
+                        rowKey="#{discList.name}" rows="10" paginator="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{disciplineMBean.discList.size()}" />            
+                    </f:facet>
+                    
+                <p:column headerText="Discipline"  filterBy="#{discList.name}" >
+                    <h:outputText value="#{discList.name}" />                            
+                    </p:column>
+
+                <p:column headerText="Active" >
+                    <h:outputText value="#{discList.active}" />                              
+                </p:column>  
+                                                           
+                <p:column headerText="Inactive" >                        
+                    <h:outputText value="#{discList.inactive}" />                          
+                </p:column>        
+                
+                <p:column headerText="Total" >                        
+                    <h:outputText value="#{discList.active+discList.inactive}" />                          
+                </p:column>
+                   
+                </p:dataTable>
+            
+            </h:form>
+            </p:panel>
+        
+
+
+    </ui:define>
+</ui:composition>

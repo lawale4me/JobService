@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Transaction History</ui:define>
+    <ui:define name="content">                             
+
+   
+          
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Transaction History" style="width: 1000px;"> 
+          
+                <h:form id="form1">
+                    
+                <p:outputLabel for="dtFrom" value="From " />
+                <p:calendar widgetVar="var1" id="dtFrom" value="#{reportAdminMBean.startdate}"
+                            pattern="yyyy-MM-dd" mode="popup" showOn="button" />            
+                <p:outputLabel for="dtTo" value="To " />
+                <p:calendar widgetVar="var2" id="dtTo" value="#{reportAdminMBean.enddate}"
+                            pattern="yyyy-MM-dd" mode="popup" showOn="button" />                            
+
+                <p:outputLabel for="accountType" value="Choose Type " />
+                <p:selectOneMenu  id="accountType" value="#{reportAdminMBean.type}" required="true" >
+                    <f:selectItem itemValue="Credit Transfer" itemLabel="Credit Transfer" />
+                    <f:selectItem itemValue="Add Credit" itemLabel="Add Credit" /> 
+                    <f:selectItem itemValue="Top Up" itemLabel="Top Up" /> 
+                </p:selectOneMenu>                                                
+ 
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage name="/demo/images/ajaxloadingbar.gif" />
+        </p:dialog>
+                
+                
+                
+                <p:commandButton id="btnFilter" value="Search" update="tTable"  action="#{reportAdminMBean.searchTrnx()}" ajax="true" />
+
+            <p:spacer/>
+                
+                
+                <p:dataTable value="#{reportAdminMBean.tranxList}" var="tranx" 
+                             widgetVar="tTable" style="width: 1000px;" editable="true" 
+                             id="tTable"  rowKey="#{tranx.transactionId}" rows="10"  
+                             paginator="true" resizableColumns="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,15"
+                             >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{reportAdminMBean.tranxList.size()}" />            
+                    </f:facet>
+                    
+                    <p:column headerText="Trans Date" filterBy="#{tranx.transDate}" >
+                        <h:outputText value="#{tranx.transDate}" />                            
+                    </p:column>
+
+                    <p:column headerText="Amount" filterBy="#{tranx.amount}">
+                        <h:outputText value="#{tranx.amount.longValue()}" />                              
+                    </p:column>  
+                    
+                    
+                    <p:column headerText="Credit Type" filterBy="#{tranx.creditType}">                        
+                        <h:outputText value="#{tranx.creditType}" />                          
+                    </p:column>     
+                   
+                </p:dataTable>
+            </h:form>
+            </p:panel>
+        
+
+
+    </ui:define>
+</ui:composition>

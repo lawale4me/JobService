@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>                
+                <link href="#{request.contextPath}/resource/css/styles.css" rel="stylesheet" type="text/css" />    
+                <title><ui:insert name="title">Account Verification</ui:insert></title>    
+            </f:facet>       
+          
+        </h:head>
+        <h:body> 
+            <p:layout fullPage="true" >
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true" styleClass="" gutter="0">                    
+                    <table width="100%" bgcolor="white" align="left" border="0" >
+                        <tr bgcolor="white" >                                                        
+                            <td><h:graphicImage  title="VaultJobs" value="/resources/images/vaultjobs.jpg"/> </td>                            
+                        </tr>
+                    </table>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" >      
+                    <center>
+                        <h:form id="frm11">
+                            <p:growl id="messages" showDetail="true" />
+                            <table width="40%" align="center" style="margin: 20px 0px 0px 80px">
+                                <tr>
+                                    <td id="top" align="center">
+                                <p:panelGrid columns="2" style="alignment-adjust: middle">
+                                    <f:facet name="header">Account Verification</f:facet>
+                                    <h:outputLabel for="username" value="Username: " />
+                                    <p:inputText id="username" value="#{verifyMBean.username}" label="Username" required="true" style="width:200px; height: 15px"
+                                                 requiredMessage="Please enter a valid userid"/>
+
+                                    <h:outputLabel for="verifycode" value="Verifycode : "/>
+                                    <p:inputText id="verifycode" value="#{verifyMBean.verifycode}" label="Verifycode" required="true" style="width:200px; height: 15px"
+                                                 requiredMessage="Please enter a valid verifycode"/>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton icon="ui-icon-locked" value="Verify" action="#{verifyMBean.verify()}" update="messages" />
+                                    </f:facet>
+                                </p:panelGrid>                            
+                                </td>
+                                </tr>
+                            </table>
+                            </h:form>  
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <h:form id="frm33">
+                            <p:growl id="messages1" showDetail="true" />
+                            <h:outputLabel for="uname" value="Username: " />
+                                    <p:inputText id="uname" value="#{verifyMBean.uname}" label="Username" required="true" style="width:200px; height: 15px"
+                                                 requiredMessage="Please enter a valid userid"/>
+                        <p:commandButton icon="ui-icon-locked"  value="Resend Code"
+                                             update="messages1"   action="#{verifyMBean.resendCode()}" >
+                                <p:confirm header="Confirmation" message="Are you sure you want to resend verification code?" icon="ui-icon-alert" />
+                            </p:commandButton>
+ 
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                            </h:form>
+                            
+                    </center>
+                    
+                </p:layoutUnit>
+                <p:layoutUnit  position="south" size="50" closable="true" style="background: black !important;" collapsible="true">                                                                    
+                    <font color="black" > <center><B> Copyright © 2015 VAULTJOBS </B></center>       </font>                    
+                </p:layoutUnit>
+            </p:layout>
+
+
+
+        </h:body>
+
+    </f:view>
+</html>

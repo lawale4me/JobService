@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Email Reports</ui:define>
+    <ui:define name="content">                             
+
+   
+                     
+            <p:growl id="messages" showDetail="true"/>                        
+            <p:panel header="Email REPORTS" style="width: 1000px;"> 
+
+                <h:form id="form1">   
+                <p:outputLabel for="dtFrom" value="From " />
+                <p:calendar widgetVar="var1" id="dtFrom" value="#{reportAdminMBean.startdate}"
+                            pattern="MM/dd/yyyy HH:mm:ss" mode="popup" showOn="button" />            
+
+                <p:outputLabel for="dtTo" value="To " />
+                <p:calendar widgetVar="var2" id="dtTo" value="#{reportAdminMBean.enddate}"
+                            pattern="MM/dd/yyyy HH:mm:ss" mode="popup" showOn="button" />                            
+
+                <p:outputLabel for="accountType" value="Choose Status " />
+                <p:selectOneMenu  id="accountType" value="#{reportAdminMBean.status}" required="true" >
+                    <f:selectItem itemValue="0" itemLabel="PENDING" />
+                    <f:selectItem itemValue="1" itemLabel="SENT" /> 
+                    <f:selectItem itemValue="2" itemLabel="FAILED" /> 
+                    <f:selectItem itemValue="3" itemLabel="DELIVERED" /> 
+                    <f:selectItem itemValue="4" itemLabel="REJECTED" />                     
+                </p:selectOneMenu>
+                
+                <p:commandButton id="btnFilter" value="Search" update="tTable"  action="#{reportAdminMBean.searchEmail()}" ajax="true" />
+
+            <p:spacer/>
+                
+            <p:dataTable value="#{reportAdminMBean.emailList}" var="msg" 
+                        widgetVar="tTable" style="width: 1000px;" editable="true"
+                        id="tTable" resizableColumns="true"
+                        rowKey="#{msg.msgId}" rows="10" paginator="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{reportAdminMBean.emailList.size()}" />            
+                    </f:facet>
+                    
+                    <p:column headerText="Email" filterBy="#{msg.destAddress}" >
+                         <h:outputText value="#{msg.destAddress}" />                            
+                    </p:column>
+
+                    <p:column headerText="Header" filterBy="#{msg.header}">
+                         <h:outputText value="#{msg.header}" />                              
+                    </p:column>  
+                    
+                    <p:column headerText="Message">
+                        <h:outputText value="#{msg.message}" />                              
+                    </p:column>     
+                    
+                    <p:column headerText="Submitted Date" filterBy="#{msg.msgDate}">                        
+                        <h:outputText value="#{msg.msgDate}" />                          
+                    </p:column>
+                    
+                    <p:column headerText="Sent Date">                        
+                         <h:outputText value="#{msg.sendDate}" />                          
+                    </p:column>                                                                                         
+                   
+                </p:dataTable>
+            
+            </h:form>
+            </p:panel>
+        
+
+
+    </ui:define>
+</ui:composition>

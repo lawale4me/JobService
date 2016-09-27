@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>                
+                <link href="#{request.contextPath}/resource/css/styles.css" rel="stylesheet" type="text/css" />    
+                <title><ui:insert name="title">VaultJobs</ui:insert></title>    
+            </f:facet>       
+
+            <script type="text/javascript">                 
+                function handleLoginRequest(xhr, status, args) {
+                    if (args.validationFailed || !args.loggedIn) {
+                        PF('dlg').jq.effect("shake", {times: 5}, 100);
+                    }
+                    else {
+                        PF('dlg').hide();
+                        $('#loginLink').fadeOut();
+                    }
+                }
+                
+                function handleLoginRequest2(xhr, status, args) {
+                    if (args.validationFailed || !args.loggedIn) {
+                        PF('dlg2').jq.effect("shake", {times: 5}, 100);
+                    }
+                    else {
+                        PF('dlg2').hide();
+                        $('#loginLink').fadeOut();
+                    }
+                }
+            </script>
+        </h:head>
+        <h:body> 
+            <p:layout fullPage="true" >
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true" styleClass="" gutter="0">                    
+                    <table width="100%" bgcolor="white" align="left" border="0" >
+                        <tr bgcolor="white" >                                                        
+                            <td><h:graphicImage  title="Vault Jobs" value="/resources/images/vaultjobs.jpg"/> </td>                            
+                            <td align="right">
+                                Nigeria: 0817 714 0846
+                             <br/>   South Africa: +27 836 219 267
+                             <br/>   Email: support@vaultjobs.net
+                            </td>
+                        </tr>
+                    </table>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" >                     
+                    <div align="center">
+                        <h:form id="frm11">
+                            <p:growl id="messages" showDetail="true" />
+                            <table width="40%" align="center" style="margin: 60px 0px 0px 120px">
+                                <tr>
+                                    <td id="top" align="center">
+                                <p:panelGrid columns="2" style="alignment-adjust: middle">
+                                    <f:facet name="header">User Login</f:facet>
+                                    <h:outputLabel for="username" value="username: " />
+                                    <p:inputText id="username" value="#{loginMBean.userid}" label="Username" required="true" style="width:200px; height: 15px"
+                                                 requiredMessage="Please enter a valid userid"/>
+
+                                    <h:outputLabel for="password" value="Password : "/>
+                                    <p:password id="password" value="#{loginMBean.password}" label="Password" required="true" style="width:200px; height: 15px"
+                                                requiredMessage="Please enter a valid password"/>                                 
+
+                                    <f:facet name="footer">
+                                        <p:commandButton icon="ui-icon-locked" value="Login" action="#{loginMBean.login()}" update="messages" />
+                                    </f:facet>
+                                </p:panelGrid>                            
+                                </td>
+                                </tr>
+                            </table>
+                            </h:form>
+                            <h:outputLink value="javascript:void(0)" onclick="PF('dlg').show();" title="login">
+                                Register
+                            </h:outputLink>   <p:spacer/><p:spacer/><p:spacer/>                       
+                            <h:outputLink value="javascript:void(0)" onclick="PF('dlg2').show();" title="login">
+                                Remember Login
+                            </h:outputLink>
+                            <h:form id="form12">                                
+                            <p:growl id="mssg" showDetail="true" />
+                            <p:dialog header="User Registration" widgetVar="dlg"  resizable="true" draggable="false">
+                            <h:panelGrid id="myPane1" columns="2" cellpadding="5">
+                                    
+                                    <p:outputLabel for="userName" value="User Name: " />
+                                    <p:inputText  id="userName" value="#{customerMBean.userName}" required="true"
+                                                  maxlength="10"                                                   
+                                                  tabindex="Maximum 10 characters. Can be Alphanumeric  Without spaces" 
+                                                  title="Maximum 10 characters. Can be Alphanumeric  Without spaces"
+                                                  placeholder="Maximum 10 characters. Can be Alphanumeric  Without spaces"                                                                                                    
+                                                  validatorMessage="Maximum 10 characters. Can be Alphanumeric. Without spaces"
+                                                  requiredMessage="Username  cannot be blank">
+                                        <f:validateLength minimum="4" maximum="10" /> 
+                                    </p:inputText>
+                                    <p:outputLabel for="passwd" value="Password " />
+                                    <p:password  id="passwd"    match="passwd2" value="#{customerMBean.passwd}" required="true"
+                                                 tabindex="Maximum 10 characters. Can be Alphanumeric"
+                                                 title="Maximum 10 characters. Can be Alphanumeric"
+                                                 placeholder="Maximum 10 characters. Can be Alphanumeric"
+                                                 validatorMessage="Maximum 10 characters. Can be Alphanumeric."
+                                                 maxlength="10"
+                                                 requiredMessage="Password  cannot be blank">
+                                        <f:validateLength minimum="6" maximum="10" />
+                                    </p:password>
+                                    <p:outputLabel for="passwd2" value="Confirm Password " />
+                                    <p:password  id="passwd2"  value="#{customerMBean.cpasswd}" required="true"
+                                                 maxlength="10"
+                                                 tabindex="Maximum 10 characters. Can be Alphanumeric"
+                                                 title="Maximum 10 characters. Can be Alphanumeric"
+                                                 placeholder="Maximum 10 characters. Can be Alphanumeric"
+                                                 validatorMessage="Maximum 10 characters. Can be Alphanumeric."
+                                                 requiredMessage="Confirm Password  cannot be blank">
+                                        <f:validateLength minimum="6" maximum="10" />
+                                    </p:password>
+                                    <p:outputLabel for="fname" value="First Name " />
+                                    <p:inputText id="fname" value="#{customerMBean.fname}" required="true"
+                                                 requiredMessage="First Name  cannot be blank"/>
+                                    <p:outputLabel for="lname" value="Surname " />
+                                    <p:inputText  id="lname" value="#{customerMBean.lname}" required="true"
+                                                  requiredMessage="Surname  cannot be blank"/>
+                                    <p:outputLabel for="email" value="Email " />
+                                    <p:inputText  id="email" value="#{customerMBean.email}" required="true"
+                                                  requiredMessage="Email  cannot be blank"/>                    
+                                    <p:outputLabel for="phone" value="Phone " />
+                                    <p:inputText id="phone"  value="#{customerMBean.phone}" required="true"
+                                                  tabindex="Enter your number in format 2348xxx or 2347xxx"
+                                                  title="Enter your number in format 2348xxx or 2347xxx"
+                                                  placeholder="Enter your number in format 2348xxx or 2347xxx"
+                                                  requiredMessage="Phone  cannot be blank"
+                                                 validatorMessage="Phone field must begin with 234 and should be a valid number"
+                                                 >
+                                        <f:validateRegex pattern="^(2348|2347|2349)[0-9]{9}$" />
+                                    </p:inputText>
+                                    <p:outputLabel for="address" value="Address " />
+                                    <p:inputText  id="address" value="#{customerMBean.address}" required="true" maxlength="20"
+                                                  requiredMessage="Address  cannot be blank"/>
+                                    
+                                    <f:facet name="footer">
+                                    <p:commandButton  value="Register" update="mssg"                                               
+                                                          actionListener="#{customerMBean.addAction2()}"                                             
+                                                          oncomplete="handleLoginRequest(xhr, status, args)" />
+                                    </f:facet>  
+                                    
+                                </h:panelGrid>    
+                            </p:dialog>
+                                </h:form>
+
+                        
+                            <h:form id="form11">                                
+                                <p:growl id="mssg1" showDetail="true" />
+                                <p:dialog header="Remember Login Credentials" widgetVar="dlg2" resizable="false" draggable="false">
+                                    <h:panelGrid columns="2" cellpadding="5">                                                                        
+                                        <h:outputLabel for="email" value="Enter Email " />
+                                        <p:inputText  value="#{customerMBean.email}" required="true"/>                                                                                                                                
+                                        <f:facet name="footer">
+                                            <p:commandButton value="Submit" update="mssg1" actionListener="#{customerMBean.resetPasswd()}"
+                                                             oncomplete="handleLoginRequest2(xhr, status, args)" />
+                                        </f:facet>  
+                                    </h:panelGrid>
+                                </p:dialog>
+                            </h:form>
+                        
+                    </div>
+                </p:layoutUnit>
+                <p:layoutUnit  position="south" size="50" closable="true" style="background: black !important;" collapsible="true">                                                                    
+                    <font color="black" > <center><B> Copyright © 2015 VAULTJOBS </B></center>       </font>                    
+                </p:layoutUnit>
+            </p:layout>
+
+
+
+        </h:body>
+
+    </f:view>
+</html>

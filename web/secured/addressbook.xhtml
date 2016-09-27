@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"                
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Address Book</ui:define>
+    <ui:define name="content">                             
+
+    <h:form id="form1" enctype="multipart/form-data">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Contacts" style="width: 800px;"> 
+                <p:panelGrid columns="2">                    
+                    <h:outputLabel for="clist" value="Choose List " />
+                    <p:fileUpload id="clist" value="#{addressBookMBean.file}" mode="simple"   />
+                    <h:outputLabel for="batchname" value="List Name " />                               
+                    <p:inputText id="batchname" value="#{addressBookMBean.batchname}" label="batchname" required="true" style="width:200px; height: 15px"
+                                         requiredMessage="Please enter a valid List Name"/>
+                    <f:facet name="footer">
+                        <h:commandButton value="Upload List" action="#{addressBookMBean.addAction2}"/>
+                    </f:facet>
+                </p:panelGrid>
+                
+                <p:commandButton value="Add to list" type="button" onclick="PF('dlg1').show();" />
+                <p:spacer height="30px;"/>
+                                
+                
+                <p:dataTable value="#{addressBookMBean.contacts}" var="contact" 
+                             widgetVar="50" style="width: 500px;" editable="true"
+                             rowKey="#{contact.addressbookId}" rows="10" paginator="true"  sortBy="#{contact.batchId.batchId}" >
+                    <f:facet name="header">  
+                        Contact List  
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{addressBookMBean.onEdit}" update=":form1:messages" />  
+                    <p:ajax event="rowEditCancel" listener="#{addressBookMBean.onCancel}" update=":form1:messages" /> 
+                    <p:column filterBy="#{contact.batchId.batchname}">
+                        <f:facet name="header">  
+                            <h:outputText value="Batch" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{contact.batchId.batchname}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{contact.batchId.batchname}" style="width:100%" disabled="true"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>
+                    <p:column filterBy="#{contact.name}">
+                        <f:facet name="header">  
+                            <h:outputText value="Contact Name" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{contact.name}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{contact.name}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>
+                                        
+                    
+                    <p:column filterBy="#{contact.phonenumber}">
+                        <f:facet name="header">  
+                            <h:outputText value="Phone Number" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{contact.phonenumber}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{contact.phonenumber}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>                                                
+
+                    <p:column headerText="Options" style="width:50px">  
+                        <p:rowEditor />  
+                    </p:column> 
+                    
+                    <p:summaryRow>
+            <p:column colspan="3" style="text-align:right">
+                <h:outputText value="Total:" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{contact.batchId.addressbookCollection.size()}"/>                                    
+            </p:column>
+        </p:summaryRow>
+                    
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+        
+        
+                                <h:form id="form22" enctype="multipart/form-data">    
+                                <p:growl id="mssg1" showDetail="true" />
+                                <p:dialog header="Add to List" widgetVar="dlg1" resizable="false" draggable="false">                                    
+                                    <p:panelGrid columns="2">     
+                                        <h:outputLabel for="batch_fk" value="Choose List " />
+                                        <h:selectOneMenu id="batch_fk" 
+                                                         converter="#{batchConverter}"
+                                                         value="#{addressBookMBean.batch}" 
+                                                         title="product_fk" >                     
+                                            <f:selectItems value="#{addressBookMBean.batchList}" 
+                                                           var="batch" itemValue="#{batch}" 
+                                                           itemLabel="#{batch.batchname}"/>
+                                        </h:selectOneMenu>
+                                        <h:outputLabel for="myfile" value="Select file " />
+                                        <p:fileUpload id="myfile"  value="#{addressBookMBean.myfile}" mode="simple"   />                                        
+                                        <f:facet name="footer">
+                                            <p:commandButton  value="Upload List" action="#{addressBookMBean.addAction3()}"/>
+                                        </f:facet>
+                                    </p:panelGrid>                                    
+                                </p:dialog>
+                            </h:form>
+
+    </ui:define>
+</ui:composition>

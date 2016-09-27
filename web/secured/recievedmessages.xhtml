@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Received Messages</ui:define>
+    <ui:define name="content">                             
+
+   
+          <h:form id="form1">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Received Messages" style="width: 1000px;"> 
+                <p:dataTable value="#{reportMBean.recievedList}" var="tranx" 
+                        widgetVar="50" style="width: 1000px;" editable="true"
+                        resizableColumns="true"
+                        rowKey="#{tranx.msgId}" rows="10" paginator="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{reportMBean.recievedList.size()}" />            
+                    </f:facet>
+                    
+                    
+                    <!--Header|Recipient|Message|Send Date|Sent Date|Status-->
+                    <p:column headerText="Header" filterBy="#{tranx.header}">                        
+                        <h:outputText value="#{tranx.header}" />                          
+                    </p:column>
+                    
+                    <p:column headerText="Recipient" filterBy="#{tranx.destAddress}">                        
+                        <h:outputText value="#{tranx.destAddress}" />                          
+                    </p:column>    
+                    
+                    <p:column headerText="Message" filterBy="#{tranx.message}">
+                        <h:outputText value="#{tranx.message}" />                              
+                    </p:column>
+                    
+                    <p:column headerText="Send Date" filterBy="#{tranx.msgDate}" >
+                        <h:outputText value="#{tranx.msgDate}" />                            
+                    </p:column>                                                                                                                                                                                                                 
+                    
+                    <p:column headerText="Sent Date" filterBy="#{tranx.sendDate}">                        
+                        <h:outputText value="#{tranx.sendDate}" />                          
+                    </p:column> 
+                    
+                    <p:column headerText="Status" filterBy="#{tranx.status}">                        
+                        <h:outputText value="SENT" />                          
+                    </p:column> 
+                   
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

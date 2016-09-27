@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Transaction History</ui:define>
+    <ui:define name="content">                             
+
+   
+          <h:form id="form1">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Transaction History" style="width: 1000px;"> 
+                <p:dataTable value="#{transactionMBean.tranxList}" var="tranx" 
+                        widgetVar="50" style="width: 1000px;" editable="true"
+                        resizableColumns="true"
+                        rowKey="#{tranx.transactionId}" rows="10" paginator="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{transactionMBean.tranxList.size()}" />            
+                    </f:facet>
+                    
+                    <p:column headerText="Trans Date" filterBy="#{tranx.transDate}" >
+                        <h:outputText value="#{tranx.transDate}" />                            
+                    </p:column>
+
+                    <p:column headerText="Amount" filterBy="#{tranx.amount}">
+                        <h:outputText value="#{tranx.amount.longValue()}" />                              
+                    </p:column>  
+                    
+                    
+                    <p:column headerText="Credit Type" filterBy="#{tranx.creditType}">                        
+                        <h:outputText value="#{tranx.creditType}" />                          
+                    </p:column>                                                                                                                                  
+                   
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

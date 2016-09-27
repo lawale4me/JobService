@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>                
+                <link href="#{request.contextPath}/resource/css/styles.css" rel="stylesheet" type="text/css" />    
+                <title><ui:insert name="title"> ADMIN AREA</ui:insert></title>    
+            </f:facet>       
+
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if (args.validationFailed || !args.loggedIn) {
+                        PF('dlg').jq.effect("shake", {times: 5}, 100);
+                    }
+                    else {
+                        PF('dlg').hide();
+                        $('#loginLink').fadeOut();
+                    }
+                }
+                
+                function handleLoginRequest2(xhr, status, args) {
+                    if (args.validationFailed || !args.loggedIn) {
+                        PF('dlg2').jq.effect("shake", {times: 5}, 100);
+                    }
+                    else {
+                        PF('dlg2').hide();
+                        $('#loginLink').fadeOut();
+                    }
+                }
+            </script>
+        </h:head>
+        <h:body> 
+            <p:layout fullPage="true" >
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true" styleClass="" gutter="0">                    
+                    <table width="100%" bgcolor="white" align="left" border="0" >
+                        <tr bgcolor="white" >                                                        
+                            <td><h:graphicImage  title="VaultJobs" value="/resources/images/vaultjobs.jpg"/> </td>                            
+                        </tr>
+                    </table>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" >                          
+                    <div align="center">
+                        <h:form id="frmm">
+                            <p:growl id="messages" showDetail="true" />
+                            <table width="40%" align="center" style="margin: 60px 0px 0px 120px">
+                                <tr>
+                                    <td id="top" align="center">
+                                <p:panelGrid columns="2" style="alignment-adjust: middle">
+                                    <f:facet name="header">Admin Login</f:facet>
+                                    <h:outputLabel for="username" value="username: " />
+                                    <p:inputText id="username" value="#{loginMBean.auserid}" label="Username" required="true" style="width:200px; height: 15px"
+                                                 requiredMessage="Please enter a valid userid"/>
+
+                                    <h:outputLabel for="password" value="Password : "/>
+                                    <p:password id="password" value="#{loginMBean.apassword}" label="Password" required="true" style="width:200px; height: 15px"
+                                                requiredMessage="Please enter a valid password"/>                                 
+
+                                    <f:facet name="footer">
+                                        <p:commandButton icon="ui-icon-locked" value="Login" action="#{loginMBean.loginAdmin()}" update="messages" />
+                                    </f:facet>
+                                </p:panelGrid>                            
+                                </td>
+                                </tr>
+                            </table>
+                            </h:form>                                               
+                            <h:outputLink value="javascript:void(0)" onclick="PF('dlg2').show();" title="login">
+                                Remember Login
+                            </h:outputLink>
+                         
+                            <h:form id="form11">                                
+                                <p:growl id="mssg1" showDetail="true" />
+                                <p:dialog header="Remember Login Credentials" widgetVar="dlg2" resizable="false" draggable="false">
+                                    <h:panelGrid columns="2" cellpadding="5">                                                                        
+                                        <h:outputLabel for="email" value="Enter Username " />
+                                        <p:inputText  value="#{customerAdminMBean.myusername}" required="true"/>                                                                                                                                
+                                        <f:facet name="footer">
+                                            <p:commandButton value="Submit" update="mssg1" actionListener="#{customerAdminMBean.resetPasswd()}"
+                                                             oncomplete="handleLoginRequest2(xhr, status, args)" />
+                                        </f:facet>  
+                                    </h:panelGrid>
+                                </p:dialog>
+                            </h:form>
+                        
+                    </div>
+                </p:layoutUnit>
+                <p:layoutUnit  position="south" size="50" closable="true" style="background: black !important;" collapsible="true">                                                                    
+                    <font color="black" > <center><B> Copyright © 2015 VAULTJOBS </B></center>       </font>                    
+                </p:layoutUnit>
+            </p:layout>
+
+
+
+        </h:body>
+
+    </f:view>
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+    <ui:define name="title">Admin Settings</ui:define>                  
+    
+    <ui:define name="content">    
+        <h:form id="form1">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Settings" style="width: 1000px;"> 
+                <p:panelGrid columns="2" rendered="false">
+                    <h:outputLabel for="name" value="Name: " />
+                    <p:inputText id="name"  value="#{settingsMBean.name}" required="true"/>
+                    <h:outputLabel for="val" value="Value " />
+                    <p:inputText id="val" value="#{settingsMBean.value}" required="true"/>                   
+                    <f:facet name="footer">
+                        <h:commandButton value="Add Settings" action="#{settingsMBean.addAction}"/>
+                    </f:facet>
+                </p:panelGrid>
+                <p:spacer height="30px;"/>
+                <p:dataTable value="#{settingsMBean.settingsList}" var="settings" 
+                        widgetVar="50" style="width: 1000px;" editable="true"
+                        resizableColumns="true"
+                        rowKey="#{settings.settingsId}" rows="10" paginator="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{settingsMBean.settingsList.size()}" />            
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{settingsMBean.onEdit}" update=":form1:messages" />  
+                    <p:ajax event="rowEditCancel" listener="#{settingsMBean.onCancel}" update=":form1:messages" /> 
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Setting Name" />  
+                        </f:facet>                                            
+                        <h:outputText value="#{settings.name}" />  
+                            
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Value" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{settings.value}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{settingsMBean.value}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>                  
+
+                    <p:column headerText="Options" style="width:50px">  
+                        <p:rowEditor />  
+                    </p:column> 
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        </ui:define>
+</ui:composition>
+

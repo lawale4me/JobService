@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"    
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Create Admin</ui:define>
+    <ui:define name="content">                                     
+        <h:form>
+            <p:growl id="messages" showDetail="true" autoUpdate="true"  />
+            <table width="40%" align="center" style="margin: 60px 0px 0px 120px">
+                <tr>
+                    <td id="top" align="center">
+                        <p:panelGrid columns="2" style="alignment-adjust: middle">
+                            <f:facet name="header">New Admin</f:facet>
+                            <h:outputLabel for="username" value="UserName " />
+                            <p:inputText id="username" value="#{userMBean.username}" label="username" required="true" style="width:200px; height: 15px"
+                                         requiredMessage="Please enter a valid userName"/>
+
+                            <h:outputLabel for="email" value="Email Address " />
+                            <p:inputText id="email" value="#{userMBean.email}" label="email" required="true" style="width:200px; height: 15px"
+                                         requiredMessage="Please enter a valid email"/>
+
+                            <h:outputLabel for="phone" value="Phone " />
+                            <p:inputText id="phone" value="#{userMBean.phone}" label="phone" required="true" style="width:200px; height: 15px"
+                                         requiredMessage="Please enter a valid phone"/>
+
+                            <h:outputLabel for="name" value="Surname " />
+                            <p:inputText id="name" value="#{userMBean.name}" label="name" required="true" style="width:200px; height: 15px"
+                                         requiredMessage="Please enter a valid Surname"/>
+                            
+                            <h:outputLabel for="fname" value="First Name " />
+                            <p:inputText id="fname" value="#{userMBean.fname}" label="fname" required="true" style="width:200px; height: 15px"
+                                         requiredMessage="Please enter a valid First Name"/>
+
+                            <h:outputLabel for="password" value="Password : "/>
+                            <p:password id="passwd" value="#{userMBean.passwd}" label="password" required="true" style="width:200px; height: 15px"
+                                        requiredMessage="Please enter a valid password" />
+                            <f:facet name="footer">
+                                <p:commandButton icon="ui-icon-locked" ajax="false" value="Register" action="#{userMBean.create()}" update="messages" >                                 
+                                </p:commandButton>
+                            </f:facet>
+                        </p:panelGrid>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+    <f:view contentType="text/html">
+        <h:head>            
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>                
+                <link href="#{request.contextPath}/resource/css/styles.css" rel="stylesheet" type="text/css" />    
+                <title><ui:insert name="title">Vault Jobs</ui:insert></title>    
+            </f:facet>
+
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if (args.validationFailed || !args.loggedIn) {
+                        PF('dlg1').jq.effect("shake", {times: 5}, 100);
+                    }
+                    else {
+                        PF('dlg1').hide();
+                        $('#loginLink').fadeOut();
+                    }
+                }
+            </script>
+
+        </h:head>
+        <h:body> 
+            
+
+            <p:layout fullPage="true" >
+                <p:layoutUnit position="north"  collapsible="true"
+                              gutter="0" resizable="true"  size="85" closable="true">                                        
+                    <h:form>                              
+                        <table width="100%" align="left" border="0"  cellpadding="0" bgcolor="white" >
+                            <tr bgcolor="white"  align="left">                                  
+                                <td>
+                            <h:graphicImage  title="VaultJobs" value="/resources/images/vaultjobs.jpg"/>                             
+                            </td> 
+                            <td >
+                                Nigeria: 0817 714 0846
+                             <br/>   South Africa: +27 836 219 267
+                             <br/>   Email: support@vaultjobs.net
+                            </td>
+                            <td>
+                                <p>Welcome, #{loginMBean.userid}</p>                       
+                            </td>                            
+                            
+                            <td align="right">
+                            <p:commandButton action="#{loginMBean.logout}" value="Logout"  ajax="false"/>                        
+                            </td>
+                            </tr>
+                        </table>                                                            
+                    </h:form>  
+
+                </p:layoutUnit>                
+                <p:layoutUnit gutter="0"  position="west" size="250" collapsible="true" style="background: black !important;" >
+                    <h:form id="formLayout">
+                        <p:growl id="messages" showDetail="true"/>
+                        <p:menu style="background: grey !important;">                        
+                            <p:submenu  label="MENU" >                                                                                                                                          
+                                <p:menuitem value="Submit Your credential" url="/credentials"  />                                                                
+                                <p:menuitem value="Pay/Renew Subscription" url="/subscription" />
+                                <p:menuitem value="Change Your Password" url="/changepassword"  />
+                            </p:submenu>                  
+                            <p:submenu  label="Reports" >
+                                <p:menuitem value="Received Messages" url="/recievedmessages"/>
+                                <p:menuitem value="Transaction History" url="/transactionhistory"/>                                
+                            </p:submenu>                   
+                            <p:submenu  label="Settings" >                                
+                                <p:menuitem value="Edit Your Profile" url="/settingsusr"/>
+                            </p:submenu>
+                        </p:menu>                                                                 
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center"  gutter="0"> 
+                    <div align="left">
+                        <h:form>
+                            <p:commandButton value="Download Manual" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                <p:fileDownload value="#{loginMBean.file}" />
+                            </p:commandButton>                    
+                        </h:form>
+                    </div>
+                    <ui:insert name="content"></ui:insert>
+                </p:layoutUnit>
+
+                <p:layoutUnit  position="south" size="50" closable="true" style="background: black !important;" collapsible="true">                                                                    
+                    <font color="black" > <center><B> Copyright © 2015 VAULTJOBS </B></center>       </font>                    
+                </p:layoutUnit>                          
+
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
+

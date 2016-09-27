@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout2.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"  
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Quick Teller Transaction</ui:define>
+    <ui:define name="content">                             
+
+   
+                     
+            <p:growl id="messages" showDetail="true"/>                        
+            <p:panel header="Quick Teller Transaction" style="width: 1000px;"> 
+
+                <h:form id="form1">                                   
+                    <p:dataTable value="#{qTMBean.qtList}" var="qt" 
+                        widgetVar="tTable"  editable="true"
+                        id="tTable" resizableColumns="true"
+                        rowKey="#{qt.qtID}" rows="10" paginator="true" scrollable="true" >
+                    <f:facet name="header">                                                  
+                        Summary Count:<h:outputText value="#{qTMBean.qtList.size()}" />            
+                    </f:facet>
+                    
+                        <p:column headerText="Customer ID" filterBy="#{qt.customerId}" >
+                         <h:outputText value="#{qt.customerId}" />                            
+                    </p:column>
+
+                        <p:column headerText="Amount" filterBy="#{qt.amount}">
+                         <h:outputText value="#{qt.amount}" />                              
+                    </p:column>  
+                    
+                    <p:column headerText="ResponseCode">
+                        <h:outputText value="#{qt.respCode}" />                              
+                    </p:column>                                                                                                                                  
+                        
+                        <p:column headerText="Tranx Ref" filterBy="#{qt.txRef}" resizable="true">
+                            <h:outputText value="#{qt.txRef}" />                              
+                    </p:column> 
+                        
+                    <p:column headerText="Description">
+                        <h:outputText value="#{qt.respDesc}" />                              
+                    </p:column>
+                        
+                    <p:column headerText="Tranx Date">
+                        <h:outputText value="#{qt.tranxDate}" />                              
+                    </p:column>
+                   
+                </p:dataTable>
+            
+            </h:form>
+            </p:panel>
+        
+
+
+    </ui:define>
+</ui:composition>

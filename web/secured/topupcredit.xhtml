@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"        
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Top Up Credit</ui:define>
+    <ui:define name="content">                             
+
+      <h:form>
+            <p:growl id="messages" showDetail="true" autoUpdate="true"  />
+            <table width="40%" align="center" style="margin: 60px 0px 0px 120px">
+                <tr>
+                    <td id="top" align="center">
+                        <p:panelGrid id="panel" columns="2" style="alignment-adjust: middle">
+                            <div id="PwQ-Affilliate-widget">
+        <style type="text/css">
+            div.pwq-container {
+                width: 50px;
+                height:80px;                
+            }
+            div.pwq-telco {
+                height:55px;
+                width:95%;
+                margin: 5px;
+                border-bottom: 1px dotted gainsboro;
+                vertical-align:middle;
+            }
+            h3.pwq-title {
+                font-size:15px;
+                margin: 0 0px;
+                border-bottom: 2px solid #666;
+                padding: 6px 6px;
+                color: #FFF;
+                background-color: #3265D2;
+            }
+            div.pwq-footer {
+               padding:5px 5px 2px 5px; 
+               color: #1b1b1b;
+               background-color: #CCC;
+            }
+            div.pwq-button {
+                height:100%;
+                /*border: 1px solid black;*/
+                float: right;
+                width: 50%;
+            }
+            div.pwq-footer a {
+               text-decoration:none;
+            }
+        </style>
+        
+        <div id="PwQ-Affilliate-widget">
+            <div class="pwq-container">
+        
+            <div class="pwq-telco">
+                <div class="pwq-button">
+                    <a class="quickteller-checkout-anchor" id="04197201"></a>
+                    <script type="text/javascript">
+                        var QTCheckout = QTCheckout || {};
+                        QTCheckout.paymentItems = QTCheckout.paymentItems || [];
+                        QTCheckout.paymentItems.push({
+                            paymentCode: "04197201",
+                            extraData: {
+                                buttonSize: 'small',
+                                customerId: '#{loginMBean.userid}'                                
+                            }
+                        });
+                        if (!QTCheckout.qtScript) {
+                            var qtScript = document.createElement('script'); qtScript.type = 'text/javascript'; qtScript.async = true; qtScript.src = "https:" + "//paywith.quickteller.com/scripts/quickteller-checkout-min.js?v=" + new Date().getDay(); var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(qtScript, s); QTCheckout.qtScript = qtScript;
+                        } else if (QTCheckout.buildPaymentItemsUI) {
+                            QTCheckout.buildPaymentItemsUI();
+                        }
+                    </script>
+                </div>
+            </div>
+                </div>
+            </div>
+                                </div>
+                                
+                        </p:panelGrid>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>
